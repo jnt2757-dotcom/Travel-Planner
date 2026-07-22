@@ -4,6 +4,13 @@ A client-facing itinerary deliverable. Vite + React + TypeScript + Tailwind CSS,
 no backend, no database, no auth — a single static page you build once per
 trip and send (or print to PDF) to a client.
 
+There are two ways to build a trip:
+
+1. **Edit mode at `/edit`** — a form-based editor, no code required. This is
+   the normal workflow (see below).
+2. **Editing `src/data/trip.ts` directly** — for anyone comfortable in the
+   codebase who'd rather hand-edit the sample data as a starting point.
+
 ## Running it
 
 ```
@@ -13,23 +20,84 @@ npm run dev
 
 Then open the local URL Vite prints (typically `http://localhost:5173`).
 
+- `/` is the client-facing page — what you send or print for a client.
+- `/edit` is the trip editor — what you use to build the trip.
+
 To build a static bundle for hosting or archiving:
 
 ```
 npm run build
 ```
 
-Output goes to `dist/`.
+Output goes to `dist/`. If you deploy this to a static host, make sure it's
+configured to serve `index.html` for unknown paths (an "SPA fallback" or
+"rewrite all routes to /index.html" setting) — otherwise a direct link to
+`/edit` or a hard refresh there will 404. Vite's own dev server and preview
+server already do this automatically, no configuration needed locally.
 
-## Building a new client trip
+## Edit mode (`/edit`)
 
-**Everything client-specific lives in one file: `src/data/trip.ts`.** You
-should never need to touch a component to ship a new trip — only edit the
-`trip` object at the bottom of that file. The interfaces above it document
-every field; TypeScript will flag anything you miss or get wrong (run `npx
-tsc --noEmit` or just watch the dev server for red squiggles/errors).
+This is a working tool for you, not something a client ever sees — it's
+deliberately plain and dense rather than styled like the client page.
 
-Below is what each part of the `trip` object controls and where it shows up.
+**How it saves:** everything you type saves automatically to the browser's
+`localStorage` a moment after you stop typing (a small "Saved" label confirms
+it). The client page at `/` reads from that same saved trip, so once you've
+edited something in `/edit`, reloading `/` shows it immediately. If you've
+never saved anything, `/` falls back to the built-in Amalfi Coast sample.
+
+Because it's `localStorage`, the saved trip is tied to this one browser on
+this one machine — it does not sync anywhere and isn't a substitute for
+keeping your own copy of each client's trip. That's what Export is for:
+
+- **Export .json** downloads the current trip as a file named after the
+  client (e.g. `mr-mrs-whitfield.json`). Treat this file as the source of
+  record for that client's trip — keep it, back it up, reuse it.
+- **Import** loads an exported `.json` file back into the editor, replacing
+  whatever's currently there. Use this to resume work on a past client or to
+  hand a trip file to someone else.
+- **New trip** clears the editor to an empty template (one blank day, one
+  blank outbound flight) so you can start a trip from scratch. It asks for
+  confirmation first since it discards whatever's currently in the editor
+  (export first if you want to keep it).
+- **Load sample** restores the built-in Amalfi Coast example, useful as a
+  reference for formatting (e.g. "how did I phrase a layover pill last
+  time?"). Also asks for confirmation first.
+- **Preview ↗** opens `/` in a new tab so you can check how the trip actually
+  looks as you build it.
+
+**Adding, removing, and reordering:** every repeatable thing (flights, flight
+legs, properties, days, and the entries within a day) has its own add/remove
+controls. Days and entries within a day also have move-up/move-down controls
+to reorder them — day numbers renumber automatically to match their order, so
+you never edit a day number directly.
+
+**Nothing is validated.** You can leave any field blank. The client page at
+`/` is built to skip empty sections gracefully — an empty Accommodation list,
+for instance, means that whole section just doesn't render, rather than
+showing a broken or empty-looking block. This means it's safe to start a
+trip early and fill it in over time; just don't send the client the link
+until it's actually ready.
+
+## Editing `src/data/trip.ts` directly
+
+If you'd rather work in code, **everything client-specific lives in one
+file: `src/data/trip.ts`.** You should never need to touch a component to
+ship a new trip this way — only edit the `defaultTrip` object at the bottom
+of that file (this is also what "Load sample" in the editor restores). The
+interfaces above it document every field; TypeScript will flag anything you
+miss or get wrong (run `npx tsc --noEmit` or just watch the dev server for
+red squiggles/errors).
+
+Note that editing `trip.ts` only changes the *fallback* the client page uses
+when nothing is saved in `/edit`'s `localStorage` yet. If you've already used
+`/edit` in this browser, `/` will keep showing whatever's saved there instead
+— use "New trip" or "Load sample" in the editor, or clear the browser's
+`localStorage` for this site, to see `trip.ts` changes reflected at `/`
+again.
+
+Below is what each part of the `defaultTrip` object controls and where it
+shows up (the same fields the `/edit` form exposes).
 
 ### `meta` — hero section
 

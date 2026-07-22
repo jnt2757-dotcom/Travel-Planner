@@ -22,28 +22,43 @@ function StatPill({ value, label, index }: { value: string | number; label: stri
 }
 
 export function Overview({ overview, startDate, endDate, accommodations }: OverviewProps) {
-  const nights = nightsBetween(startDate, endDate);
+  const nights = startDate && endDate ? nightsBetween(startDate, endDate) : null;
+  const propertiesCount = accommodations.length;
+  const paragraphs = overview.introCopy.filter((p) => p.trim().length > 0);
+
+  const stats: { value: number; label: string }[] = [];
+  if (nights !== null && nights > 0) stats.push({ value: nights, label: nights === 1 ? "night" : "nights" });
+  if (overview.destinationsCount) {
+    stats.push({ value: overview.destinationsCount, label: "destinations" });
+  }
+  if (propertiesCount > 0) {
+    stats.push({ value: propertiesCount, label: propertiesCount === 1 ? "property" : "properties" });
+  }
+  if (overview.travelerCount) {
+    stats.push({ value: overview.travelerCount, label: overview.travelerCount === 1 ? "traveler" : "travelers" });
+  }
+
+  if (stats.length === 0 && paragraphs.length === 0) return null;
 
   return (
     <section id="overview" className="mx-auto max-w-[1120px] px-6 py-24 sm:px-10 sm:py-24">
-      <div className="flex flex-wrap gap-4">
-        <StatPill index={0} value={nights} label={nights === 1 ? "night" : "nights"} />
-        <StatPill index={1} value={overview.destinationsCount} label="destinations" />
-        <StatPill index={2} value={accommodations.length} label="properties" />
-        <StatPill
-          index={3}
-          value={overview.travelerCount}
-          label={overview.travelerCount === 1 ? "traveler" : "travelers"}
-        />
-      </div>
+      {stats.length > 0 && (
+        <div className="flex flex-wrap gap-4">
+          {stats.map((stat, i) => (
+            <StatPill key={stat.label} index={i} value={stat.value} label={stat.label} />
+          ))}
+        </div>
+      )}
 
-      <Reveal index={4} className="mt-12 max-w-2xl">
-        {overview.introCopy.map((paragraph, i) => (
-          <p key={i} className={`text-[17px] leading-[1.65] text-ink-soft ${i > 0 ? "mt-4" : ""}`}>
-            {paragraph}
-          </p>
-        ))}
-      </Reveal>
+      {paragraphs.length > 0 && (
+        <Reveal index={stats.length} className={`max-w-2xl ${stats.length > 0 ? "mt-12" : ""}`}>
+          {paragraphs.map((paragraph, i) => (
+            <p key={i} className={`text-[17px] leading-[1.65] text-ink-soft ${i > 0 ? "mt-4" : ""}`}>
+              {paragraph}
+            </p>
+          ))}
+        </Reveal>
+      )}
     </section>
   );
 }

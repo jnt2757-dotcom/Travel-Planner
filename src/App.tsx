@@ -1,31 +1,17 @@
-import { Accommodation } from "./components/Accommodation";
-import { Flights } from "./components/Flights";
-import { Footer } from "./components/Footer";
-import { Hero } from "./components/Hero";
-import { Itinerary } from "./components/Itinerary";
-import { Overview } from "./components/Overview";
-import { PracticalInfo } from "./components/PracticalInfo";
-import { trip } from "./data/trip";
+import { useEffect, useState } from "react";
+import { ClientPage } from "./pages/ClientPage";
+import { EditorPage } from "./pages/EditorPage";
 
 function App() {
-  return (
-    <div className="bg-cream">
-      <Hero meta={trip.meta} />
-      <main>
-        <Overview
-          overview={trip.overview}
-          startDate={trip.meta.startDate}
-          endDate={trip.meta.endDate}
-          accommodations={trip.accommodations}
-        />
-        <Flights flights={trip.flights} />
-        <Accommodation accommodations={trip.accommodations} />
-        <Itinerary days={trip.itinerary} />
-        <PracticalInfo info={trip.practicalInfo} />
-      </main>
-      <Footer footer={trip.footer} />
-    </div>
-  );
+  const [path, setPath] = useState(window.location.pathname);
+
+  useEffect(() => {
+    const onPopState = () => setPath(window.location.pathname);
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  return path.replace(/\/$/, "") === "/edit" ? <EditorPage /> : <ClientPage />;
 }
 
 export default App;

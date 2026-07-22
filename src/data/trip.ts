@@ -149,7 +149,7 @@ export interface Trip {
 // Sample trip: seven nights, Amalfi Coast
 // ---------------------------------------------------------------------------
 
-export const trip: Trip = {
+export const defaultTrip: Trip = {
   meta: {
     title: "The Amalfi Coast Journey",
     clientName: "Mr. & Mrs. Whitfield",

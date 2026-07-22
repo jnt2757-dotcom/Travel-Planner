@@ -53,9 +53,12 @@ function EndpointBlock({
       <p className="mt-2 text-sm font-medium text-ink">{city}</p>
       <p className="text-[13px] text-ink-soft">{airportName}</p>
       {terminal && <p className="text-[13px] text-ink-soft">Terminal {terminal}</p>}
-      <p className="mt-2 text-[13px] text-ink-soft">
-        {formatLongDate(date)} · <span className="font-medium text-ink">{time}</span>
-      </p>
+      {(date || time) && (
+        <p className="mt-2 text-[13px] text-ink-soft">
+          {date ? formatLongDate(date) : "Date to be confirmed"}
+          {time && <> · <span className="font-medium text-ink">{time}</span></>}
+        </p>
+      )}
     </div>
   );
 }
@@ -134,6 +137,8 @@ function JourneyGroup({ journey }: { journey: FlightJourney }) {
 }
 
 export function Flights({ flights }: { flights: FlightJourney[] }) {
+  if (flights.length === 0) return null;
+
   return (
     <section id="flights" className="bg-white/60 py-24">
       <div className="mx-auto max-w-[1120px] px-6 sm:px-10">

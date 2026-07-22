@@ -56,17 +56,20 @@ function DayBlock({
         <span className="font-display text-6xl leading-none text-accent">{pad(day.dayNumber)}</span>
         <div>
           <p className="text-sm text-ink-soft">
-            {formatWeekday(day.date)}, {formatLongDate(day.date)} · {day.city}
+            {day.date ? `${formatWeekday(day.date)}, ${formatLongDate(day.date)}` : "Date to be confirmed"}
+            {day.city ? ` · ${day.city}` : ""}
           </p>
-          <h3 className="mt-1 font-display text-2xl text-ink sm:text-3xl">{day.title}</h3>
+          <h3 className="mt-1 font-display text-2xl text-ink sm:text-3xl">{day.title || "Untitled day"}</h3>
         </div>
       </div>
 
-      <ol className="relative mt-10 ml-1 space-y-7 border-l border-ink/15">
-        {day.entries.map((entry, i) => (
-          <TimelineEntry key={`${entry.time}-${entry.title}`} entry={entry} index={i} />
-        ))}
-      </ol>
+      {day.entries.length > 0 && (
+        <ol className="relative mt-10 ml-1 space-y-7 border-l border-ink/15">
+          {day.entries.map((entry, i) => (
+            <TimelineEntry key={i} entry={entry} index={i} />
+          ))}
+        </ol>
+      )}
 
       {day.notes && (
         <div className="mt-8 rounded-nested bg-[#F1E9DD] p-5">
@@ -81,6 +84,8 @@ function DayBlock({
 export function Itinerary({ days }: { days: ItineraryDay[] }) {
   const dayNumbers = days.map((d) => d.dayNumber);
   const { activeDay, registerDay, scrollToDay } = useActiveDay(dayNumbers);
+
+  if (days.length === 0) return null;
 
   return (
     <section id="itinerary" className="py-24">
@@ -105,7 +110,7 @@ export function Itinerary({ days }: { days: ItineraryDay[] }) {
                       : "bg-white text-ink-soft shadow-card"
                   }`}
                 >
-                  <span className="font-medium">{pad(day.dayNumber)}</span> {day.city}
+                  <span className="font-medium">{pad(day.dayNumber)}</span> {day.city || `Day ${pad(day.dayNumber)}`}
                 </button>
               </li>
             ))}
@@ -133,7 +138,7 @@ export function Itinerary({ days }: { days: ItineraryDay[] }) {
                     >
                       {pad(day.dayNumber)}
                     </span>
-                    <span className="truncate">{day.city}</span>
+                    <span className="truncate">{day.city || `Day ${pad(day.dayNumber)}`}</span>
                   </button>
                 </li>
               ))}
