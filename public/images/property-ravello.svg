@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-labelledby="t d">
+  <title id="t">Clifftop garden terrace above Ravello</title>
+  <desc id="d">A stone garden terrace with cypress trees overlooking the coastline far below</desc>
+  <defs>
+    <linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#EAE3D3"/>
+      <stop offset="100%" stop-color="#D8CBB0"/>
+    </linearGradient>
+    <linearGradient id="dist" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8FA89C"/>
+      <stop offset="100%" stop-color="#5F7C6E"/>
+    </linearGradient>
+    <linearGradient id="stone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#DCD2BE"/>
+      <stop offset="100%" stop-color="#C3B79C"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#sky3)"/>
+  <path d="M0,470 Q400,420 700,460 Q950,495 1200,440 L1200,560 L0,560 Z" fill="url(#dist)" opacity="0.65"/>
+  <rect x="0" y="540" width="1200" height="260" fill="url(#stone)"/>
+  <g fill="#A9866A">
+    <rect x="60" y="560" width="1080" height="16" rx="6"/>
+    <rect x="60" y="600" width="1080" height="16" rx="6"/>
+  </g>
+  <g fill="#4C5A46">
+    <ellipse cx="180" cy="470" rx="26" ry="110"/>
+    <ellipse cx="360" cy="500" rx="22" ry="90"/>
+    <ellipse cx="980" cy="480" rx="26" ry="105"/>
+    <ellipse cx="1080" cy="510" rx="20" ry="85"/>
+  </g>
+  <g fill="#8C6F4E" opacity="0.85">
+    <rect x="500" y="600" width="200" height="14" rx="7"/>
+    <rect x="540" y="614" width="14" height="60" rx="4"/>
+    <rect x="646" y="614" width="14" height="60" rx="4"/>
+  </g>
+  <circle cx="600" cy="200" r="60" fill="#FBEFDC" opacity="0.8"/>
+</svg>

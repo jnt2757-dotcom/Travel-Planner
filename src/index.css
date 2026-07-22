@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #FAF8F5;
+  --color-ink: #1A1A18;
+  --color-ink-soft: #6B6862;
+  --color-accent: #8C6F4E;
+  --color-surface: #FFFFFF;
+
+  --font-display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 28px;
+  --radius-nested: 20px;
+
+  --shadow-card: 0 2px 24px rgba(26, 26, 24, 0.06);
+  --shadow-card-lift: 0 12px 32px rgba(26, 26, 24, 0.10);
+
+  --animate-fade-rise: fade-rise 0.4s ease-out both;
+
+  @keyframes fade-rise {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .reveal-visible {
+    animation: fade-rise 0.4s ease-out both;
+  }
+}
+
+@media print {
+  * {
+    box-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .print-hide {
+    display: none !important;
+  }
+
+  .print-compact-hero {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 24px 0 !important;
+    display: block !important;
+  }
+
+  .print-compact-hero * {
+    color: #1a1a18 !important;
+  }
+
+  .print-hero-img {
+    position: static !important;
+    height: 160px !important;
+    width: 100% !important;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  .day-block,
+  .avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  section {
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+  }
+
+  body {
+    background: #fff !important;
+  }
+}
