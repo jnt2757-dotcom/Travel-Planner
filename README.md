@@ -34,6 +34,8 @@ configured to serve `index.html` for unknown paths (an "SPA fallback" or
 "rewrite all routes to /index.html" setting) — otherwise a direct link to
 `/edit` or a hard refresh there will 404. Vite's own dev server and preview
 server already do this automatically, no configuration needed locally.
+On Vercel this repo's `vercel.json` already handles it; other hosts (Netlify,
+Cloudflare Pages, etc.) need their own equivalent SPA-fallback setting.
 
 ## Edit mode (`/edit`)
 
