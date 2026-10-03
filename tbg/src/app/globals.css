@@ -1,0 +1,196 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+ * Thompson Building Group design system.
+ * Generated with UI UX Pro Max (variance 3 / motion 4 / density 2), palette and
+ * type re-tuned to the brief: warm neutrals, charcoal, one bronze accent drawn
+ * from the TBG mark (#9E8759). Contrast is checked against the surface each
+ * token sits on (see design-system/MASTER.md).
+ */
+
+@theme {
+  /* Primitive palette */
+  --color-limestone: #f5f1ea;
+  --color-linen: #fbf9f5;
+  --color-stone: #e6dfd3;
+  --color-hairline: #d6ccbd;
+  --color-rule: #8c8273; /* 3.6:1 on linen — form field borders */
+  --color-charcoal: #252320;
+  --color-charcoal-soft: #34312d;
+  --color-graphite: #5c564d; /* 6.5:1 on limestone */
+  --color-bronze: #7a5c3e; /* 5.4:1 on limestone — the one accent */
+  --color-gilt: #b89a64; /* accent on charcoal, 5.9:1 */
+  --color-ember: #e9e2d6; /* text on charcoal, 12:1 */
+  --color-ember-muted: #a39a8c; /* secondary text on charcoal, 5.6:1 */
+  --color-error: #9b2c1f;
+
+  /* Type */
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-manrope), "Manrope", system-ui, sans-serif;
+
+  --text-display: clamp(3rem, 1.6rem + 6vw, 7.5rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.015em;
+  --text-headline: clamp(2.25rem, 1.5rem + 3vw, 4.25rem);
+  --text-headline--line-height: 1.02;
+  --text-headline--letter-spacing: -0.01em;
+  --text-title: clamp(1.625rem, 1.3rem + 1.2vw, 2.25rem);
+  --text-title--line-height: 1.15;
+  --text-lede: clamp(1.1875rem, 1.1rem + 0.35vw, 1.375rem);
+  --text-lede--line-height: 1.6;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.65;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.24em;
+
+  /* Motion tokens (ms). Slow and decelerating everywhere but the hero. */
+  --ease-arrive: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-leave: cubic-bezier(0.55, 0, 1, 0.45);
+  --duration-hover: 250ms;
+  --duration-reveal: 900ms;
+  --duration-image: 1200ms;
+
+  --breakpoint-3xl: 112rem;
+}
+
+/* shadcn semantic tokens mapped onto the TBG palette */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-heading: var(--font-serif);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+}
+
+:root {
+  --background: var(--color-limestone);
+  --foreground: var(--color-charcoal);
+  --card: var(--color-linen);
+  --card-foreground: var(--color-charcoal);
+  --popover: var(--color-linen);
+  --popover-foreground: var(--color-charcoal);
+  --primary: var(--color-charcoal);
+  --primary-foreground: var(--color-linen);
+  --secondary: var(--color-stone);
+  --secondary-foreground: var(--color-charcoal);
+  --muted: var(--color-stone);
+  --muted-foreground: var(--color-graphite);
+  --accent: var(--color-stone);
+  --accent-foreground: var(--color-charcoal);
+  --destructive: var(--color-error);
+  --border: var(--color-hairline);
+  --input: var(--color-rule);
+  --ring: var(--color-bronze);
+  --radius: 0;
+
+  --gutter: clamp(1.25rem, 0.6rem + 3vw, 4rem);
+  --section: clamp(6rem, 3rem + 9vw, 12rem);
+  --header-h: 5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply bg-background font-sans text-body text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-background;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-serif font-light;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-charcoal);
+    color: var(--color-linen);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-bronze);
+    outline-offset: 3px;
+  }
+  .dark-surface :focus-visible {
+    outline-color: var(--color-gilt);
+  }
+  a,
+  button {
+    touch-action: manipulation;
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-[90rem];
+    padding-inline: var(--gutter);
+  }
+  .section-y {
+    padding-block: var(--section);
+  }
+  .label {
+    @apply font-sans text-label font-medium uppercase;
+  }
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size var(--duration-hover) var(--ease-arrive);
+  }
+  .link-underline:hover,
+  .link-underline:focus-visible,
+  .link-underline[aria-current="page"] {
+    background-size: 100% 1px;
+  }
+}
+
+/* Reveal: hidden only once JS has confirmed motion is allowed (html.motion-ok). */
+.motion-ok [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+}
+.motion-ok [data-reveal-image] {
+  clip-path: inset(6% 6% 6% 6%);
+}
+.motion-ok [data-reveal-image] img {
+  transform: scale(1.08);
+}
