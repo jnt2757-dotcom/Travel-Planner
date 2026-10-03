@@ -72,6 +72,15 @@ export const inquiry = {
   intro: "Please submit this form and we will be in touch with you soon.",
 };
 
+/** Stages for the build-footage hero (frame sequence from public/hero/build.mp4). */
+export const heroSteps = [
+  { title: "Foundation", description: "Every residence begins with a precise, engineered footprint." },
+  { title: "Framing", description: "The architect's lines take shape, true and square." },
+  { title: "Exterior", description: "Stone, slate and timber, detailed by hand." },
+  { title: "Interiors", description: "Millwork and finishes, curated room by room." },
+  { title: "Home", description: "A residence ready for the life it was designed for." },
+] as const;
+
 export const hero = {
   opening: "From plans to reality",
   stages: ["Plans", "Foundation", "Framing", "Exterior", "Home"],
