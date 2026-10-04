@@ -4,6 +4,8 @@
 #   public/hero/frames/frame_0001.webp …         ~150 frames, 1920px wide (desktop)
 #   public/hero/frames-mobile/frame_0001.webp …  ~75 frames, 960px wide (phones)
 #   public/hero/final.webp                       last frame, full quality (reduced-motion still)
+#   src/config/hero-frames.json                  counts + size; the home page switches to the
+#                                                frame-sequence hero as soon as desktop > 0
 #
 # Usage: npm run hero:frames   (FRAMES=150 MOBILE_FRAMES=75 to override)
 set -euo pipefail
@@ -25,18 +27,28 @@ rm -rf public/hero/frames public/hero/frames-mobile
 mkdir -p public/hero/frames public/hero/frames-mobile
 
 ffmpeg -loglevel error -i "$SRC" \
-  -vf "fps=$(fps_for "$FRAMES"),scale=1920:-2:flags=lanczos" \
+  -vf "fps=$(fps_for "$FRAMES"),scale='min(1920,iw)':-2:flags=lanczos" \
   -c:v libwebp -quality 72 -compression_level 6 \
   public/hero/frames/frame_%04d.webp
 
 ffmpeg -loglevel error -i "$SRC" \
-  -vf "fps=$(fps_for "$MOBILE_FRAMES"),scale=960:-2:flags=lanczos" \
+  -vf "fps=$(fps_for "$MOBILE_FRAMES"),scale='min(960,iw)':-2:flags=lanczos" \
   -c:v libwebp -quality 68 -compression_level 6 \
   public/hero/frames-mobile/frame_%04d.webp
 
 ffmpeg -loglevel error -sseof -0.1 -i "$SRC" -frames:v 1 \
-  -vf "scale=2400:-2:flags=lanczos" -c:v libwebp -quality 85 \
+  -vf "scale='min(2400,iw)':-2:flags=lanczos" -c:v libwebp -quality 85 \
   -y public/hero/final.webp
 
 echo "desktop: $(ls public/hero/frames | wc -l) frames, $(du -sh public/hero/frames | cut -f1)"
 echo "mobile:  $(ls public/hero/frames-mobile | wc -l) frames, $(du -sh public/hero/frames-mobile | cut -f1)"
+
+IFS=x read -r W H < <(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=x public/hero/final.webp)
+cat > src/config/hero-frames.json <<JSON
+{
+  "desktop": $(ls public/hero/frames | wc -l),
+  "mobile": $(ls public/hero/frames-mobile | wc -l),
+  "final": { "width": $W, "height": $H }
+}
+JSON
+echo "wrote src/config/hero-frames.json"

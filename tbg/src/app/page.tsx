@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { featuredProjects, projects } from "@content/projects";
 import { underConstruction } from "@content/construction";
 import { neighborhoods, site, story } from "@content/site";
+import { buildHero } from "@/config/hero";
+import { BuildHero } from "@/components/hero/build-hero";
 import { HeroSequence } from "@/components/hero/hero-sequence";
 import { HeroStill } from "@/components/hero/hero-still";
 import { InquiryBand, ProjectCard, SectionHeading, TextLink } from "@/components/sections";
@@ -23,7 +25,7 @@ export default function HomePage() {
 
   return (
     <>
-      <HeroSequence />
+      {buildHero.enabled ? <BuildHero /> : <HeroSequence />}
       <HeroStill />
 
       {/* Intro */}

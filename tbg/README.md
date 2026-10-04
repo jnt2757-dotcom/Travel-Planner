@@ -23,20 +23,23 @@ npm run images   # convert new photos in public/images to WebP + refresh content
 | `src/app/globals.css` | Design tokens (colors, type scale, motion) |
 | `design-system/MASTER.md` | Design system rationale and rules |
 
-## Hero frames
+## Hero
 
-The home hero is a pinned, scroll-scrubbed build sequence. Until real renders exist it plays
-an SVG placeholder (blueprint → foundation → framing → exterior → photo at dusk).
+The home hero is the 21st.dev **MacBook Neo Hero** (`FrameSequenceHero`, in
+`src/components/ui/mac-book-neo-hero.tsx` + `.css`), restyled to the design system. It scrubs a
+frame sequence of the build footage through five stages (copy in `content/site.ts` →
+`heroSteps`), then holds the final frame with the wordmark, neighborhoods and View Portfolio.
 
-To use rendered frames:
+To add or replace the footage:
 
-1. Export the sequence as `public/hero/frame_0001.webp`, `frame_0002.webp`, … (1920px wide
-   WebP at ~quality 70 keeps ~150 frames around 10–15 MB).
-2. Set `HERO_FRAME_COUNT` in `src/config/hero.ts`.
+1. Put the video at `public/hero/build.mp4` (locked camera, slab through finished home at dusk).
+2. Run `npm run hero:frames`. It writes ~150 desktop frames (`public/hero/frames`), ~75 lighter
+   phone frames (`public/hero/frames-mobile`), `public/hero/final.webp` for reduced motion, and
+   `src/config/hero-frames.json`.
+3. Commit those files. The home page switches to the frame hero automatically once the manifest
+   has frames; until then the earlier placeholder hero is shown.
 
-Frame 1 is rendered as a normal image so it paints before JavaScript; the rest load
-progressively (every 4th frame first), phones use every 2nd frame, and reduced-motion users
-get a static final image instead.
+Stage timing (when each card takes over) is `stageBounds` in `src/config/hero.ts`.
 
 ## Content
 
